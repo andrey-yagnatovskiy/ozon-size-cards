@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}{{ line.title }} — Генератор карточек Ozon{% endblock %}
+
+{% block content %}
+<nav class="crumbs"><a href="{{ url_for('index') }}">Линейки</a> / {{ line.title }}</nav>
+
+<h1>{{ line.title }}</h1>
+<p class="lead">
+  Макет: <code>{{ line.layout }}</code> · Прайс: <code>{{ line.data_file }}</code>
+</p>
+
+{% if generated %}
+<p class="notice">Готово: сгенерировано карточек — {{ files|length }}.</p>
+{% endif %}
+
+<section class="panel">
+  <h2>Размеры из прайса — {{ rows|length }}</h2>
+  <div class="sizes-wrap">
+    <table class="sizes">
+      <thead>
+        <tr>{% for column in line.columns %}<th>{{ column }}</th>{% endfor %}</tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>{% for value in row %}<td>{{ value }}</td>{% endfor %}</tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="actions">
+    <form method="post" action="{{ url_for('line_generate', key=line.key) }}">
+      <button class="button" type="submit">Сгенерировать карточки</button>
+    </form>
+    {% if files %}
+    <a class="button button-ghost" href="{{ url_for('download', key=line.key) }}">
+      Скачать ZIP — {{ files|length }} шт.
+    </a>
+    {% endif %}
+  </div>
+</section>
+
+{% if files %}
+<section class="panel">
+  <h2>Готовые карточки</h2>
+  <div class="previews">
+    {% for filename in files %}
+    <figure>
+      <img src="{{ url_for('preview', key=line.key, filename=filename) }}" alt="{{ filename }}" loading="lazy">
+      <figcaption>{{ filename }}</figcaption>
+    </figure>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

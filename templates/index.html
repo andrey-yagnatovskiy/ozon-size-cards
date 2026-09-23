@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Товарные линейки</h1>
+<p class="lead">
+  Выберите линейку — на её странице видно список размеров из прайса и кнопку генерации.
+  Одна строка прайса = одна карточка для Ozon.
+</p>
+
+<div class="grid">
+  {% for card in cards %}
+  <article class="card">
+    <div class="card-head">
+      <h2>{{ card.line.title }}</h2>
+      <span class="badge">{{ card.line.material }}</span>
+    </div>
+
+    <dl class="props">
+      <div><dt>Подставляется</dt><dd>{{ card.line.substitutes }}</dd></div>
+      <div><dt>Размеров в прайсе</dt><dd>{{ card.sizes_count }}</dd></div>
+      <div><dt>Готовых карточек</dt><dd>{{ card.ready_count }}</dd></div>
+    </dl>
+
+    {% if card.error %}
+      <p class="error">Нет исходных данных: {{ card.error }}</p>
+    {% else %}
+      <a class="button" href="{{ url_for('line_detail', key=card.line.key) }}">Открыть</a>
+    {% endif %}
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}
