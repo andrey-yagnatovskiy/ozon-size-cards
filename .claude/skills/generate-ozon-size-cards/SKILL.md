@@ -20,7 +20,7 @@ description: Work with the Ozon size-card generator repository — run the Flask
 
 ```
 app.py                          веб-интерфейс Flask, реестр линеек LINES
-generate_cards.py               общие функции отрисовки + линейка «лента»
+generate_cards.py               общие функции отрисовки, используются всеми линейками
 generate_kaprolon_listy.py      капролон листовой      → толщина
 generate_kaprolon_sterzhni.py   капролон стержневой    → диаметр + длина
 generate_poliuretan_list.py     полиуретан листовой    → толщина
